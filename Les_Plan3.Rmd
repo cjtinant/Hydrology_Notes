@@ -1,0 +1,56 @@
+---
+title: "Les_Plan3_start"
+author: "Charles Jason Tinant"
+date: "1/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We usually think about precipitation as a **depth** rather than a volume.  We can use the equation $Vol = depth * area$.  To find out the average **depth** of water that falls on each country each year, we need to divide the land area from the precipitation volume. However, in the example below, we don't have the total land area of the world.  However, from Table 1.1 in the text we have the land areas by continent. 
+
+```{r calculate_ann_depth_km}
+# we can quickly add data together in R rather than read it in from a
+# .csv file using the 'concatinate' function, c().  Than using the 
+# 'tidyverse', we can easily bind rows and columns together.
+
+library(tidyverse) # load the tidyverse package
+
+# make a vector of strings with continent names and a vector of area values 
+continent <- c("Africa", "North America", "South America", "Asia", 
+               "Europe", "Oceania")
+area_thos_km2 <- c(3022, 2471, 1784, 4458, 1018, 853)
+
+# lets turn these into data.frames rather than vectors
+continent <- as.data.frame(continent)
+area_thos_km2 <- as.data.frame(area_thos_km2) 
+
+# bind the two vectors together and then make it into a data-frame
+land_area_km2 <- bind_cols(continent, area_thos_km2)
+
+# Take a look at land_area to check if it looks ok. Now use 'sum()' and
+# use the result to find the global average annual precipitation depth.
+# Note: the *1000 at the end is to get the land area into kilometers
+land_area_tot_km2 <- sum(land_area_km2$area_thos_km2) *1000
+
+precip_ann_km <- precip_ann_km3 / land_area_tot_km2
+```
+
+Of course, we don't express the depth in kilometers.  We can use the following converstion factor  *We use a lot of unit conversion in hydrology.*  
+
+$depth(m) = depth(km) *1000(m/km)$
+
+```{r calculate_ann_depth_m}
+# use a conversion factor to find the average global precipitation 
+# depth in meters
+
+precip_ann_m <-precip_ann_km * 1000 # 1000 m in 1 km
+print(precip_ann_m)
+```
+
+
+**Get into groups of about four and write your own equation to find the *effective precipitation*, the amount of precipitation after evaporation**
+
+
